@@ -1,0 +1,5 @@
+<resources>
+    <dimen name="default_button_size">48dp</dimen>
+    <dimen name="default_margin">1.5dp</dimen>
+    <dimen name="default_weight">0.3</dimen>
+</resources>
