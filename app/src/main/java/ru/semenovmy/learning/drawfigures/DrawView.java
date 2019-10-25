@@ -40,7 +40,6 @@ public class DrawView extends View {
     private int mCurrentColor;
 
     private FigureType mFigureType = FigureType.GRAPH;
-    private MultiDraw multiDraw;
 
     public DrawView(Context context) {
         this(context, null);
