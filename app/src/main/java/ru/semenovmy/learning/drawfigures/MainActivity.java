@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private Button mGraphButton;
     private Button mLineButton;
     private Button mSquareButton;
+    private Button mMultiDrawButton;
 
     private Button mAccentColorButton;
     private Button mBlackColorButton;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         mBlackColorButton = findViewById(R.id.color_black);
         mVioletColorButton = findViewById(R.id.color_violet);
         mClearButton = findViewById(R.id.btn_clear);
+        mMultiDrawButton = findViewById(R.id.button_multi_draw);
 
         mGraphButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +79,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mDrawView.setDrawType(FigureType.SQUARE);
+            }
+        });
+
+        mMultiDrawButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDrawView.setDrawType(FigureType.MULTI);
             }
         });
 

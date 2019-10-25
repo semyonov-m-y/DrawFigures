@@ -34,9 +34,13 @@ public class DrawView extends View {
     private List<Square> mSquares = new ArrayList<>();
     private Square mCurrentSquare;
 
+    private MultiDraw mCurrentMultiFigure;
+    private List<MultiDraw> mMultiFigures = new ArrayList<>();
+
     private int mCurrentColor;
 
     private FigureType mFigureType = FigureType.GRAPH;
+    private MultiDraw multiDraw;
 
     public DrawView(Context context) {
         this(context, null);
@@ -69,6 +73,7 @@ public class DrawView extends View {
         graphDraw(canvas);
         lineDraw(canvas);
         squareDraw(canvas);
+        multiDraw(canvas);
     }
 
     private void graphDraw(Canvas canvas) {
@@ -86,6 +91,16 @@ public class DrawView extends View {
             float endY = line.getEnd().y;
             mLinePaint.setColor(line.getColor());
             canvas.drawLine(startX, startY, endX, endY, mLinePaint);
+        }
+    }
+
+    private void multiDraw(Canvas canvas) {
+        for (MultiDraw figure : mMultiFigures) {
+            figure.multiFigureDraw(canvas);
+        }
+
+        if (mCurrentMultiFigure != null) {
+            mCurrentMultiFigure.multiFigureDraw(canvas);
         }
     }
 
@@ -127,11 +142,43 @@ public class DrawView extends View {
             case SQUARE:
                 squareMotionEvents(event);
                 break;
+            case MULTI:
+                getMultiMotionEvents(event);
+                break;
             default:
                 return super.onTouchEvent(event);
         }
         invalidate();
         return true;
+    }
+
+    private void getMultiMotionEvents(MotionEvent event) {
+        PointF currentPoint = new PointF(event.getX(), event.getY());
+
+        switch (event.getActionMasked()) {
+            case MotionEvent.ACTION_DOWN:
+                mCurrentMultiFigure = new MultiDraw(mCurrentColor);
+                currentPoint = mCurrentMultiFigure.getPoint(0);
+                break;
+            case MotionEvent.ACTION_POINTER_DOWN:
+                int pointerId = event.getPointerId(event.getActionIndex());
+                currentPoint = mCurrentMultiFigure.getPoint(pointerId);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                for (int i = 0; i < event.getPointerCount(); i++) {
+                    int pointId = event.getPointerId(i);
+                    mCurrentMultiFigure.getPoint(pointId).x = event.getX(i);
+                    mCurrentMultiFigure.getPoint(pointId).y = event.getY(i);
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                mMultiFigures.add(mCurrentMultiFigure);
+                mCurrentMultiFigure = null;
+                break;
+        }
+
+        currentPoint.x = event.getX(event.getActionIndex());
+        currentPoint.y = event.getY(event.getActionIndex());
     }
 
     private void graphMotionEvents(MotionEvent event) {

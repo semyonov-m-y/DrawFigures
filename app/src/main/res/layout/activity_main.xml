@@ -122,6 +122,15 @@
             android:layout_marginLeft="@dimen/default_margin"
             />
 
+        <Button
+            android:id="@+id/button_multi_draw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/multi"
+            android:layout_weight="@dimen/default_weight"
+            android:layout_marginLeft="@dimen/default_margin"
+            />
+
     </LinearLayout>
 
     <Button
